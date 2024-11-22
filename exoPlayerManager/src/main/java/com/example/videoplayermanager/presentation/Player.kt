@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
@@ -19,6 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +34,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -47,8 +50,8 @@ fun Player(
     url: String,
 ) {
     var isPlaying by remember { mutableStateOf(true) }
-    val viewModel: VideoPlayerViewModel = hiltViewModel()
-
+    val viewModel: PlayerViewModel = hiltViewModel()
+    val state by viewModel.state.collectAsState()
 
     var lifecycle by remember {
         mutableStateOf(Lifecycle.Event.ON_CREATE)
@@ -82,7 +85,7 @@ fun Player(
                 }
             },
             update = {
-                /* when (lifecycle) {
+                when (lifecycle) {
                      Lifecycle.Event.ON_PAUSE -> {
                          it.onPause()
                          it.player?.pause()
@@ -90,10 +93,15 @@ fun Player(
 
                      Lifecycle.Event.ON_RESUME -> {
                          it.onResume()
+                         it.player?.play()
                      }
 
+                    Lifecycle.Event.ON_DESTROY -> {
+                        it.player?.pause()
+                    }
+
                      else -> Unit
-                 }*/
+                 }
             },
         )
         Image(
@@ -108,20 +116,17 @@ fun Player(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Song Title
-        Text(
-            text = "Song Title",
-            style = BrotherFont,
-            fontWeight = FontWeight.Bold
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
-        // Artist Name
         Text(
-            text = "Artist Name",
+            text = state.songTitle,
             style = BrotherFont,
+            fontWeight = FontWeight.Thin,
+            fontSize = 15.sp,
             color = Color.Gray
         )
 
+        Spacer(modifier = Modifier.height(20.dp))
         // Playback Controls
         Row(
             modifier = Modifier.fillMaxWidth(),

@@ -53,8 +53,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":platform:network"))
     implementation(project(":exoPlayerManager"))
 
     implementation(libs.androidx.core.ktx)

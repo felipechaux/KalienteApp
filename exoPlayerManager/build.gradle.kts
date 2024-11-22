@@ -25,7 +25,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
     testOptions {
         unitTests {
@@ -35,6 +35,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":platform:network"))
+    implementation(project(":data"))
+
     implementation(libs.androidx.media3.common)
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)

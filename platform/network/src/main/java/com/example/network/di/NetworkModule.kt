@@ -17,7 +17,7 @@
 package com.example.network.di
 
 import android.content.Context
-import com.example.network.data.APIService
+import com.example.network.data.PlayerStatusService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.example.network.utils.APIConstants.BASE_API_URL
@@ -44,8 +44,8 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideNASAService(@Named("retrofit") retrofit: Retrofit): APIService =
-        retrofit.create(APIService::class.java)
+    fun providePlayerStatusService(@Named("retrofit") retrofit: Retrofit): PlayerStatusService =
+        retrofit.create(PlayerStatusService::class.java)
 
     @Provides
     fun provideGson(): Gson = GsonBuilder().create()
