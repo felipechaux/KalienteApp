@@ -6,9 +6,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.media3.common.Player
 import com.example.network.base.ApiResource
 import com.example.videoplayermanager.usecases.GetPlayerStatusUseCase
+import com.example.videoplayermanager.utils.Constants.MINUTES
 import com.example.videoplayermanager.utils.Constants.REWIND_FORWARD_SECONDS
+import com.example.videoplayermanager.utils.Constants.SECONDS
+import com.example.videoplayermanager.utils.Constants.TIME_MS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,11 +27,21 @@ class PlayerViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(HomeUiState())
     val state: StateFlow<HomeUiState> = _state
+    private var isPlayable: Boolean = true
 
     init {
         player.prepare()
         player.play()
-        getPlayerStatus()
+        viewModelScope.launch {
+            while (isPlayable) {
+                getPlayerStatus()
+                delay(MINUTES * SECONDS.toLong() * TIME_MS.toLong())
+            }
+        }
+    }
+
+    fun stopDelay() {
+        isPlayable = false
     }
 
     private fun getPlayerStatus() {
