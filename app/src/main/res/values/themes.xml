@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.KalienteApp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/kaliente_red</item>
+        <item name="postSplashScreenTheme">@style/Theme.KalienteApp</item>
+    </style>
+</resources>
+
+
+
+
